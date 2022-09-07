@@ -1,6 +1,6 @@
 Trabajar javascrip in the backend
 
-# Section 9: Backend - Node _Express - MongoDB
+# Section 9: Backend - Node Express - MongoDB
 Configuración de Mongo
 Robo 3T
 Conexión entre Mongo y Node
