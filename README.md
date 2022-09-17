@@ -1,6 +1,6 @@
 Trabajar javascrip in the backend
 
-# Section 9: Backend - Node _Express - MongoDB
+# Section 9: Backend - Node Express - MongoDB
 Configuración de Mongo
 Robo 3T
 Conexión entre Mongo y Node
@@ -17,6 +17,9 @@ npm i -g nodemon
 npm i dotenv
 npm i cors
 npm i mongoose //  https://mongoosejs.com/
+npm i express-validator
+npm i bcryptjs
+npm i jsonwebtoken
 
 
 Create Files:
