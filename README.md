@@ -18,7 +18,7 @@ npm i dotenv
 npm i cors
 npm i mongoose //  https://mongoosejs.com/
 npm i express-validator
-npm i bcryptjs
+npm i bcryptjs  To encrypt password
 npm i jsonwebtoken
 
 
@@ -50,7 +50,11 @@ git push --tags
 	
 3.	Create index.js, database/config.js, .env
 
-4.	Update psckage.json ==> "scripts": {"start:dev "nodemon index.js"}
+4.	Update package.json ==> "scripts": {"start:dev "nodemon index.js"}
+
+5. run:  npm run start:dev
+
+
 
 	
 	

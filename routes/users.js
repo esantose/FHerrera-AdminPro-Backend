@@ -10,9 +10,9 @@ const { validarJWT } = require('../middlewares/validar-jwt');
 
 const router = Router();
 
-//router.get( '/', validarJWT , getUsers );
+router.get( '/', validarJWT , getUsers );
 
-router.get( '/', getUsers);
+//router.get( '/', getUsers);
 // router.get( '/', (req, res) => {
 //     res.json({
 //       ok: true,
@@ -34,7 +34,8 @@ router.post( '/',
 
 router.put( '/:id',
     [
-         check('nombre', 'El nombre es obligatorio').not().isEmpty(),
+        validarJWT,
+        check('nombre', 'El nombre es obligatorio').not().isEmpty(),
         check('email', 'El email es obligatorio').isEmail(),
         check('role', 'El role es obligatorio').not().isEmpty(),
         validarCampos,

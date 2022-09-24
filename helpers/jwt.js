@@ -8,6 +8,7 @@ const generarJWT = ( uid ) => {
             uid,
         };
     
+        //JWT_SECRET is a constant in .env file
         jwt.sign( payload, process.env.JWT_SECRET, {
             expiresIn: '12h'
         }, ( err, token ) => {

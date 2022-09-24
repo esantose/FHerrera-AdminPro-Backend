@@ -2,7 +2,7 @@ const { response } = require('express');
 const bcrypt = require('bcryptjs');
 
 const User = require('../models/user');
-const { genolderarJWT } = require('../helpers/jwt');
+const { generarJWT } = require('../helpers/jwt');
 
 //XXX to remove after 
 //const { validationResult } = require('express-validator')
@@ -46,12 +46,12 @@ const crearUser = async(req, res = response) => {
         await user.save();
 
         // Generar el TOKEN - JWT
-        //const token = await generarJWT( user.id );
+        const token = await generarJWT( user.id );
 
         res.json({
             ok: true,
-            user
-            //token
+            user,
+            token
         });
 
 
@@ -70,6 +70,11 @@ const actualizarUser = async (req, res = response) => {
     const uid = req.params.id;
     console.log('actualizarUser-uid..' + uid);
 
+    const { nombre, email, role} = req.body;
+    console.log('actualizarUser-nombre..' + nombre);
+    console.log('actualizarUser-email..' + email);
+    console.log('actualizarUser-role..' + role);
+
     try {
 
         const userDB = await User.findById( uid );
@@ -83,26 +88,28 @@ const actualizarUser = async (req, res = response) => {
         }
 
         // Actualizaciones
-        const campos = req.body;
-        console.log('campos..' + req.nombre);
-        if ( userDB.email === req.body.email ) {
-            delete campos.email;
+        //Remove fields: password, google
+        const { password, google, email, ...campos } = req.body;
+
+        if ( userDB.email !== email ) {
+
+            const existeEmail = await User.findOne({ email });
+            if ( existeEmail ) {
+                return res.status(400).json({
+                    ok: false,
+                    msg: 'Ya existe un usuario con ese email'
+                });
+            }
         }
-
-        delete campos.password;
-        delete campos.google;
-
-
-        const userActualizado = await User.findByIdAndUpdate( uid, campos, {  new: true});
-        //const userActualizado = await User.findByIdAndUpdate( { _id: uid }, { $set: campos}, {  new: true});
-        console.log('userActualizado..' + userActualizado);
+        
+        campos.email = email;
+        const usuarioActualizado = await User.findByIdAndUpdate( uid, campos, { new: true } );
 
         res.json({
             ok: true,
-            user: userActualizado
-            //token
-        });        
-        
+            usuario: usuarioActualizado
+        });
+                
     } catch (error) {
         console.log(error);
         res.status(500).json({
@@ -122,7 +129,7 @@ const borrarUser = async(req, res = response ) => {
 
         const userDB = await User.findById( uid );
 
-        if ( !usuarioDB ) {
+        if ( !userDB ) {
             return res.status(404).json({
                 ok: false,
                 msg: 'No existe un usuario por ese id'
@@ -142,7 +149,8 @@ const borrarUser = async(req, res = response ) => {
         console.log(error);
         res.status(500).json({
             ok: false,
-            msg: 'Hable con el administrador'
+            msg: 'Hable con el administrador',
+            err: error
         });
 
     }
