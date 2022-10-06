@@ -3,19 +3,46 @@ const bcrypt = require('bcryptjs');
 
 const User = require('../models/user');
 const { generarJWT } = require('../helpers/jwt');
-
-//XXX to remove after 
-//const { validationResult } = require('express-validator')
+const user = require('../models/user');
 
 
 const getUsers = async(req, res) => {
 
-    const users = await User.find({}, 'nombre email role google');
+    //Postman = http://localhost:3000/api/users?desde=8
+    // const users = await User.find({}, 'nombre email role google');
+
+    // res.json({
+    //     ok: true,
+    //     users
+    // });
+
+    //===========================
+
+    // const desde = Number(req.query.desde) || 0;
+    // const users = await User
+    //     .find({}, 'nombre email role google')
+    //     .skip( desde)
+    //     .limit (2);
+    // console.log (desde);
+    // const total = await user.count();
+
+    //=====================================
+    //Promise ejecutara ambos requiriemntos a la misma vez
+    const desde = Number(req.query.desde) || 0;
+    const [ users, total ] = await Promise.all([
+        User
+            .find({}, 'nombre email role google img')
+            .skip( desde )
+            .limit( 5 ),
+
+        User.countDocuments()
+    ]);
 
     res.json({
         ok: true,
-        users
-    });
+        users,
+        total
+    });    
 
 }
 
@@ -42,7 +69,7 @@ const crearUser = async(req, res = response) => {
         user.password = bcrypt.hashSync( password, salt );
     
     
-        // Guardar usuario
+        // Guardar user
         await user.save();
 
         // Generar el TOKEN - JWT
@@ -83,7 +110,7 @@ const actualizarUser = async (req, res = response) => {
         if ( !userDB ) {
             return res.status(404).json({
                 ok: false,
-                msg: 'No existe un usuario por ese id'
+                msg: 'No existe un user por ese id'
             });
         }
 
@@ -97,17 +124,17 @@ const actualizarUser = async (req, res = response) => {
             if ( existeEmail ) {
                 return res.status(400).json({
                     ok: false,
-                    msg: 'Ya existe un usuario con ese email'
+                    msg: 'Ya existe un  con ese email'
                 });
             }
         }
         
         campos.email = email;
-        const usuarioActualizado = await User.findByIdAndUpdate( uid, campos, { new: true } );
+        const userActualizado = await User.findByIdAndUpdate( uid, campos, { new: true } );
 
         res.json({
             ok: true,
-            usuario: usuarioActualizado
+            user: userActualizado
         });
                 
     } catch (error) {
@@ -132,7 +159,7 @@ const borrarUser = async(req, res = response ) => {
         if ( !userDB ) {
             return res.status(404).json({
                 ok: false,
-                msg: 'No existe un usuario por ese id'
+                msg: 'No existe un user por ese id'
             });
         }
 
@@ -141,7 +168,7 @@ const borrarUser = async(req, res = response ) => {
         
         res.json({
             ok: true,
-            msg: 'Usuario eliminado'
+            msg: 'User eliminado'
         });
 
     } catch (error) {

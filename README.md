@@ -31,6 +31,9 @@ config.js
 MongoDB-conn: 
 mongodb+srv://easantose:Miperu1808@cluster0.7wzjb2o.mongodb.net/DBHospital
 
+
+user: easantose@gmail.compswd: Dbgary1001
+
 ## Repository in Git
 git init
 git add .
@@ -47,12 +50,16 @@ git push --tags
 	
 2. 	Install expressjs. It will create node_modules, too
 	npm i express --save
+	npm i express-fileupload
+	npm i uuid
 	
 3.	Create index.js, database/config.js, .env
 
 4.	Update package.json ==> "scripts": {"start:dev "nodemon index.js"}
 
 5. run:  npm run start:dev
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2MzJlN2M2M2UzNGE2OTZlMWZmOGFhMTQiLCJpYXQiOjE2NjQ0MDI3ODgsImV4cCI6MTY2NDc0ODM4OH0.wHYPabcwQpBwrMPXBH5GvESkk3-D9xtqX6S5EY8x-80
 
 
 
