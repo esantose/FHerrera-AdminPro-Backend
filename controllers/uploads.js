@@ -72,13 +72,13 @@ const fileUpload = ( req, res = response ) => {
             console.log(err)
             return res.status(500).json({
                 ok: false,
-                msg: 'Error al mover la imagen'
+                msg: 'Error al mover la imagen' 
             });
         }
 
         // Actualizar base de datos
         //actualizarImagen();
-        actualizarImagen( tipo, id, nombreArchivo );
+        actualizarImagen( tipo, id, nombreArchivo );Fin
 
         res.json({
             ok: true,
